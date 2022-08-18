@@ -50,10 +50,47 @@ ggplot(data = space_lunch, aes(x = launch_date,
 ggsave(here("rockets_graph.png"))
 ```
 
+##Task 2
+
+```{r}
+sf_gg <- read_csv(here("data", "San_Francisco_Communitywide_Greenhouse_Gas_Inventory.csv"))
+
+
+```
+
+```{r}
+
+summary_table <- sf_gg |>
+  group_by(Sector_General) |> 
+  summarize(total_ghg = sum(Emissions_mtCO2e, na.rm = TRUE))
+
+summary_table2 <- sf_gg |> 
+  group_by(Calendar_Year, Commodity_Type) |> 
+  summarize(ghg_total = sum(Emissions_mtCO2e, na.rm = TRUE))
+  
+subset <- sf_gg |> 
+  filter(Calendar_Year %in% 2002) |> 
+  select()
+
+
+```
+
+
+
+```{r}
+
+ggplot(data = summary_table2,
+       aes(x = Calendar_Year,
+           y = ghg_total)) +
+  geom_jitter() +
+  gghighlight(Commodity_Type == "Electricity",
+            label_key = Commodity_Type)
 
 
 
 
+
+```
 
 
 
